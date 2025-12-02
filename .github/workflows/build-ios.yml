@@ -25,17 +25,14 @@ jobs:
       - name: Set up Gradle
         uses: gradle/gradle-build-action@v2
 
-      - name: Make Gradle executable
-        run: chmod +x ./gradlew
-
       - name: Build iOS XCFramework
-        run: ./gradlew :shared:createXCFramework
+        run: |
+          chmod +x ./gradlew
+          ./gradlew :shared:createXCFramework --stacktrace
 
-      # ✅ Upload the generated .xcframework as a build artifact
-      - name: Upload XCFramework Artifact
+      - name: Upload XCFramework artifact
         uses: actions/upload-artifact@v4
         with:
           name: sharedKit.xcframework
           path: |
             shared/build/XCFrameworks/release/sharedKit.xcframework
-
