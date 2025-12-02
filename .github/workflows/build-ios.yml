@@ -1,10 +1,10 @@
 name: Build iOS XCFramework
 
 on:
-  workflow_dispatch:
   push:
     branches: [ main ]
   pull_request:
+    branches: [ main ]
 
 jobs:
   build-ios:
@@ -12,26 +12,28 @@ jobs:
     runs-on: macos-latest
 
     steps:
+      # 🧩 Step 1 — Checkout repository
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      # ☕ Step 2 — Set up JDK (Gradle needs Java)
       - name: Set up JDK 17
         uses: actions/setup-java@v4
         with:
           distribution: temurin
           java-version: 17
 
-      - name: Set up Gradle
-        uses: gradle/gradle-build-action@v3
+      # 🧱 Step 3 — Grant Gradle permission to execute
+      - name: Grant execute permission for Gradle
+        run: chmod +x gradlew
 
-      - name: Make Gradle executable
-        run: chmod +x ./gradlew
+      # 🧰 Step 4 — Build the XCFramework
+      - name: Build XCFramework
+        run: ./gradlew :shared:assembleReleaseXCFramework --no-daemon
 
-      - name: Build sharedKit XCFramework
-        run: ./gradlew :shared:assembleReleaseXCFramework --stacktrace
-
+      # 📦 Step 5 — Upload the built framework as an artifact
       - name: Upload XCFramework artifact
         uses: actions/upload-artifact@v4
         with:
-          name: sharedKit.xcframework
-          path: shared/build/XCFrameworks/release/sharedKit.xcframework
+          name: Apuntes-iOS-XCFramework
+          path: shared/build/XCFrameworks/release/
