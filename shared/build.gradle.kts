@@ -1,4 +1,5 @@
 import org.gradle.internal.os.OperatingSystem
+import org.jetbrains.kotlin.gradle.plugin.mpp.apple.XCFramework
 
 plugins {
     alias(libs.plugins.kotlin.multiplatform)
@@ -68,3 +69,9 @@ tasks.register<Exec>("assembleXCFramework") {
     }
 }
 
+tasks.register<Exec>("createXCFramework") {
+    group = "build"
+    description = "Builds the shared iOS XCFramework (KMP)"
+
+    commandLine("bash", "-c", "./gradlew :shared:assembleReleaseXCFramework || ./gradlew :shared:assembleDebugXCFramework")
+}
