@@ -51,10 +51,11 @@ kotlin {
     }
 }
 
-
 tasks.register<Exec>("createXCFramework") {
     group = "build"
     description = "Builds the shared iOS XCFramework (KMP)"
-    commandLine("bash", "-c", "./gradlew :shared:assembleReleaseXCFramework || ./gradlew :shared:assembleDebugXCFramework")
+
+    // Run gradlew from project root, not from /shared
+    commandLine("bash", "-c", "../gradlew :shared:assembleReleaseXCFramework || ../gradlew :shared:assembleDebugXCFramework")
 }
 
