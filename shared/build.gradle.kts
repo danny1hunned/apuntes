@@ -52,16 +52,9 @@ kotlin {
 }
 
 
-tasks.register<Exec>("assembleXCFramework") {
+tasks.register<Exec>("createXCFramework") {
     group = "build"
-    description = "Builds the sharedKit XCFramework for iOS integration"
-
-    val os = org.gradle.internal.os.OperatingSystem.current()
-    if (os.isMacOsX) {
-        commandLine("bash", "-c", "./gradlew :shared:assembleReleaseXCFramework")
-    } else {
-        println("⚠️ XCFramework build is only supported on macOS with Xcode installed.")
-        commandLine("cmd", "/c", "echo XCFramework build skipped on Windows.")
-    }
+    description = "Builds the shared iOS XCFramework (KMP)"
+    commandLine("bash", "-c", "./gradlew :shared:assembleReleaseXCFramework || ./gradlew :shared:assembleDebugXCFramework")
 }
 
