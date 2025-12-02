@@ -57,7 +57,8 @@ tasks.register<Exec>("createXCFramework") {
 
     val gradlewPath = layout.projectDirectory.file("../gradlew").asFile.absolutePath
 
-    commandLine(gradlewPath, ":shared:assembleReleaseXCFramework")
+    commandLine(gradlewPath, ":shared:assembleXCFramework")
+
 }
 
 
