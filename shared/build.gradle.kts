@@ -51,16 +51,14 @@ kotlin {
     }
 }
 
-tasks.register("createXCFramework") {
+tasks.register<Exec>("createXCFramework") {
     group = "build"
     description = "Builds the shared iOS XCFramework (KMP)"
 
-    doLast {
-        exec {
-            workingDir = project.rootDir
-            commandLine("./gradlew", ":shared:assembleReleaseXCFramework")
-        }
-    }
+    val gradlewPath = layout.projectDirectory.file("../gradlew").asFile.absolutePath
+
+    commandLine(gradlewPath, ":shared:assembleReleaseXCFramework")
 }
+
 
 
