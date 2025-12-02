@@ -6,30 +6,36 @@ plugins {
     alias(libs.plugins.android.lint)
 }
 
+plugins {
+    alias(libs.plugins.kotlin.multiplatform)
+    alias(libs.plugins.android.kotlin.multiplatform.library)
+    alias(libs.plugins.android.lint)
+}
+
 kotlin {
     androidLibrary {
         namespace = "com.apuntes.shared"
         compileSdk = 36
         minSdk = 24
-
-        withHostTestBuilder { }
-        withDeviceTestBuilder {
-            sourceSetTreeName = "test"
-        }.configure {
-            instrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        }
     }
 
     val xcfName = "sharedKit"
 
-    iosX64 {
-        binaries.framework { baseName = xcfName }
-    }
-    iosArm64 {
-        binaries.framework { baseName = xcfName }
-    }
-    iosSimulatorArm64 {
-        binaries.framework { baseName = xcfName }
+    // ✅ Define iOS targets and configure XCFramework output
+    val iosTargets = listOf(
+        iosX64(),
+        iosArm64(),
+        iosSimulatorArm64()
+    )
+
+    val xcf = XCFramework(xcfName)
+
+    iosTargets.forEach {
+        it.binaries.framework {
+            baseName = xcfName
+            isStatic = false
+            xcf.add(this)
+        }
     }
 
     sourceSets {
@@ -40,33 +46,14 @@ kotlin {
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.8.1")
             }
         }
-
-        val commonTest by getting {
-            dependencies {
-                implementation(libs.kotlin.test)
-            }
-        }
-
         val androidMain by getting {
             dependencies {
                 implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.8.1")
             }
         }
-
-        // ✅ Modern unified Apple source set
-        val appleMain by creating {
-            dependsOn(commonMain)
-            dependencies {
-                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.8.1")
-            }
-        }
-
-        // Link all iOS targets to appleMain
-        val iosX64Main by getting { dependsOn(appleMain) }
-        val iosArm64Main by getting { dependsOn(appleMain) }
-        val iosSimulatorArm64Main by getting { dependsOn(appleMain) }
     }
 }
+
 
 tasks.register<Exec>("assembleXCFramework") {
     group = "build"
