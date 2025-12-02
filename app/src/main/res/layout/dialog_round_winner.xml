@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:foregroundGravity="center">
+
+    <!-- Card Container -->
+    <LinearLayout
+        android:id="@+id/cardRoot"
+        android:orientation="vertical"
+        android:padding="24dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="32dp"
+        android:gravity="center_horizontal"
+        android:background="@android:color/white"
+        android:elevation="12dp"
+        android:clipToOutline="true">
+
+        <TextView
+            android:id="@+id/tvRoundTitle"
+            android:text="@string/round_winner_home"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/tvSeriesScore"
+            android:text="@string/series_score_2_1_best_of_5"
+            android:layout_marginTop="12dp"
+            android:textSize="16sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <Button
+            android:id="@+id/btnOk"
+            android:text="@string/ok"
+            android:layout_marginTop="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+</FrameLayout>

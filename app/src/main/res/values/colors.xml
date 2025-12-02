@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Primary brand color (deep purple) -->
+    <color name="md_theme_primary">#5E35B1</color>
+    <color name="md_theme_onPrimary">#FFFFFF</color>
+    <color name="md_theme_primaryContainer">#7E57C2</color>
+    <color name="md_theme_onPrimaryContainer">#EDE7F6</color>
+
+    <!-- Secondary accent (soft indigo/purple-gray) -->
+    <color name="md_theme_secondary">#C5CAE9</color>
+    <color name="md_theme_onSecondary">#000000</color>
+    <color name="md_theme_secondaryContainer">#9FA8DA</color>
+    <color name="md_theme_onSecondaryContainer">#1A1A1A</color>
+
+    <!-- Backgrounds -->
+    <color name="md_theme_background">#121212</color>
+    <color name="md_theme_onBackground">#FFFFFF</color>
+    <color name="md_theme_surface">#1E1E1E</color>
+    <color name="md_theme_onSurface">#FFFFFF</color>
+    <color name="md_theme_surfaceVariant">#2A2A2A</color>
+    <color name="md_theme_onSurfaceVariant">#CCCCCC</color>
+
+    <!-- Error colors -->
+    <color name="md_theme_error">#CF6679</color>
+    <color name="md_theme_onError">#000000</color>
+
+    <!-- Success/Highlight -->
+    <color name="md_theme_success">#4CAF50</color>
+    <color name="md_theme_warning">#FF9800</color>
+
+    <!-- Dividers, disabled -->
+    <color name="md_theme_outline">#444444</color>
+</resources>

@@ -1,0 +1,37 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.apuntes">
+
+    <!-- Always outside <application> -->
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <application
+        android:name=".App"
+        android:allowBackup="true"
+        android:label="@string/app_name"
+        android:icon="@mipmap/app_icon_round"
+        android:roundIcon="@mipmap/app_icon"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.Apuntes">
+
+        <!-- 🚀 AdMob App ID -->
+        <meta-data
+            android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value="ca-app-pub-8197142441567841~9202091888" />
+
+        <!-- ✅ Activities -->
+        <activity android:name=".SetupActivity" android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <activity android:name=".ui.SeriesSetupActivity" android:exported="false" />
+        <activity android:name=".ui.TournamentSetupActivity" android:theme="@style/Theme.Material3.DayNight.NoActionBar" android:exported="false"/>
+        <activity android:name=".ui.TournamentActivity" android:exported="false" />
+        <activity android:name=".ui.RoundRobinActivity" android:exported="false" />
+        <activity android:name=".ui.EliminationActivity" android:exported="false" />
+        <activity android:name=".GameActivity" android:exported="false" />
+        <activity android:name=".tournament.LeaderboardActivity" android:exported="false" />
+    </application>
+</manifest>

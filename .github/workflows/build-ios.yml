@@ -1,0 +1,37 @@
+name: Build iOS XCFramework
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ main ]
+  pull_request:
+
+jobs:
+  build-ios:
+    name: Build XCFramework on macOS
+    runs-on: macos-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+
+      - name: Set up Gradle
+        uses: gradle/gradle-build-action@v3
+
+      - name: Make Gradle executable
+        run: chmod +x ./gradlew
+
+      - name: Build sharedKit XCFramework
+        run: ./gradlew :shared:assembleReleaseXCFramework --stacktrace
+
+      - name: Upload XCFramework artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: sharedKit.xcframework
+          path: shared/build/XCFrameworks/release/sharedKit.xcframework

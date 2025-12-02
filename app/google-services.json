@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "468876115873",
+    "project_id": "apuntes-9080d",
+    "storage_bucket": "apuntes-9080d.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:468876115873:android:fcd868fe9d799fb3c095e0",
+        "android_client_info": {
+          "package_name": "com.apuntes"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCccJ-Ud6ZTcuyfQH4sW058wgn5Dq20ZQw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

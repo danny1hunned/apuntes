@@ -1,0 +1,4 @@
+<resources>
+    <!-- Margin for dialog EditText container -->
+    <dimen name="dialog_content_margin">16dp</dimen>
+</resources>

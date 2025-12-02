@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Apuntes</string>
+    <string name="team_names">Nombres de equipos</string>
+    <string name="team_a_name">Equipo A</string>
+    <string name="team_b_name">Equipo B</string>
+    <string name="series_and_goals">Series y metas</string>
+    <string name="best_of_series_short">Mejor de</string>
+    <string name="game_target_score">Puntuación objetivo</string>
+    <string name="start_series">Iniciar serie</string>
+    <string name="who_scored">¿Quién anotó?</string>
+    <string name="enter_score">Ingresar puntuación</string>
+    <string name="undo">Deshacer</string>
+    <string name="score_history">Historial de puntuaciones</string>
+    <string name="round_winner">Ganador del turno</string>
+    <string name="series_score">%1$d - %2$d (Mejor de %3$d)</string>
+    <string name="show_match_winner">Mostrar ganador del partido</string>
+    <string name="start_next_round">Iniciar siguiente ronda</string>
+    <string name="series_winner">Ganador de la serie</string>
+    <string name="won_the_series">%1$s ganó la serie %2$d - %3$d</string>
+    <string name="restart_series">Reiniciar serie</string>
+    <string name="start_new_series">Iniciar nueva serie</string>
+    <string name="change_best_of_series">Cambiar “Mejor de” de la serie</string>
+    <string name="cancel">Cancelar</string>
+    <string name="update">Actualizar</string>
+    <string name="edit_round_score">Editar puntuación del turno</string>
+    <string name="score">Puntuación</string>
+    <string name="delete">Eliminar</string>
+    <string name="update_score">Actualizar puntuación</string>
+    <string name="no_scores_yet">Aún no hay puntuaciones</string>
+    <string name="home">LOCAL</string>
+    <string name="away">VISITANTE</string>
+    <string name="_200" translatable="false">200</string>
+    <string name="_300" translatable="false">300</string>
+    <string name="_400" translatable="false">400</string>
+    <string name="_500" translatable="false">500</string>
+    <string name="_1" translatable="false">1</string>
+    <string name="_3" translatable="false">3</string>
+    <string name="_5" translatable="false">5</string>
+    <string name="_7" translatable="false">7</string>
+    <string name="round_winner_home">Ganador del turno: LOCAL</string>
+    <string name="series_score_2_1_best_of_5">Marcador de la serie: 2 - 1 (Mejor de 5)</string>
+    <string name="ok">Aceptar</string>
+    <string name="rename">Renombrar</string>
+    <string name="tournament">Torneo</string>
+    <string name="add_team">Agregar equipo</string>
+    <string name="teams_count">Equipos: %1$d</string>
+    <string name="generate_bracket">Generar llaves</string>
+    <string name="choose_bo_mode">Política de “Mejor de”</string>
+    <string name="bo_mode_preset">Usar progresión predefinida</string>
+    <string name="bo_mode_manual_each_round">Elegir manualmente cada ronda</string>
+    <string name="choose_preset">Elegir preajuste</string>
+    <string name="set_best_of">Definir “Mejor de”</string>
+    <string name="best_of_for_round">Mejor de la ronda %1$d</string>
+    <string name="enter_odd_number">Ingrese un número impar (1,3,5…)</string>
+    <string name="round_n">Ronda %1$d</string>
+    <string name="champion">Campeón</string>
+    <string name="wins_tournament">%1$s gana el torneo</string>
+    <string name="need_min_3_teams">Se requieren al menos 3 equipos.</string>
+
+    <!-- Torneo -->
+    <string name="enter_tournament_name">Ingrese el nombre del torneo</string>
+    <string name="tournament_name_hint">Nombre del torneo</string>
+    <string name="add_teams_to_start">Agrega equipos para comenzar</string>
+    <string name="generate_round">Generar ronda</string>
+    <string name="team_name">Nombre del equipo</string>
+    <string name="done">Hecho</string>
+    <string name="team_already_exists">El equipo ya existe</string>
+    <string name="tournament_saved">Torneo guardado</string>
+    <string name="add">Agregar</string>
+    <string name="team_names_comma_separated">Nombres de equipos (separados por comas)</string>
+    <string name="start_tournament">Iniciar torneo</string>
+    <string name="tournament_mode">Modo de torneo</string>
+    <string name="target_score">Puntuación objetivo</string>
+    <string name="best_of">Mejor de</string>
+    <string name="tournament_name">Nombre del torneo</string>
+    <string name="medal">Ícono de medalla</string>
+</resources>

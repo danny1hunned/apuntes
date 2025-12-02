@@ -1,0 +1,77 @@
+<resources>
+    <string name="app_name">Apuntes</string>
+    <string name="team_names">Team names</string>
+    <string name="team_a_name">Team A</string>
+    <string name="team_b_name">Team B</string>
+    <string name="series_and_goals">Series &amp; goals</string>
+    <string name="best_of_series_short">Best of</string>
+    <string name="game_target_score">Target score</string>
+    <string name="start_series">Start series</string>
+    <string name="who_scored">Who scored?</string>
+    <string name="enter_score">Enter score</string>
+    <string name="undo">Undo</string>
+    <string name="score_history">Score history</string>
+    <string name="round_winner">Round winner</string>
+    <string name="series_score">%1$d - %2$d (Best of %3$d)</string>
+    <string name="show_match_winner">Show match winner</string>
+    <string name="start_next_round">Start next round</string>
+    <string name="series_winner">Series Winner</string>
+    <string name="won_the_series">%1$s won the series %2$d - %3$d</string>
+    <string name="restart_series">Restart series</string>
+    <string name="start_new_series">Start new series</string>
+    <string name="change_best_of_series">Change Best of series</string>
+    <string name="cancel">Cancel</string>
+    <string name="update">Update</string>
+    <string name="edit_round_score">Edit round score</string>
+    <string name="score">Score</string>
+    <string name="delete">Delete</string>
+    <string name="update_score">Update score</string>
+    <string name="no_scores_yet">No scores yet</string>
+    <string name="home">HOME</string>
+    <string name="away">AWAY</string>
+    <string name="_200" translatable="false">200</string>
+    <string name="_300" translatable="false">300</string>
+    <string name="_400" translatable="false">400</string>
+    <string name="_500" translatable="false">500</string>
+    <string name="_1" translatable="false">1</string>
+    <string name="_3" translatable="false">3</string>
+    <string name="_5" translatable="false">5</string>
+    <string name="_7" translatable="false">7</string>
+    <string name="round_winner_home">Round Winner: HOME</string>
+    <string name="series_score_2_1_best_of_5">Series Score: 2 - 1 (Best of 5)</string>
+    <string name="ok">OK</string>
+    <string name="rename">Rename</string>
+    <string name="tournament">Tournament</string>
+    <string name="add_team">Add team</string>
+    <string name="teams_count">Teams: %1$d</string>
+    <string name="generate_bracket">Generate bracket</string>
+    <string name="choose_bo_mode">Best-of policy</string>
+    <string name="bo_mode_preset">Use preset progression</string>
+    <string name="bo_mode_manual_each_round">Choose manually each round</string>
+    <string name="choose_preset">Choose preset</string>
+    <string name="set_best_of">Set Best-of</string>
+    <string name="best_of_for_round">Best-of for Round %1$d</string>
+    <string name="enter_odd_number">Enter odd number (1,3,5…)</string>
+    <string name="round_n">Round %1$d</string>
+    <string name="champion">Champion</string>
+    <string name="wins_tournament">%1$s wins the tournament!</string>
+    <string name="need_min_3_teams">At least 3 teams required.</string>
+
+    <!-- Tournament -->
+    <string name="enter_tournament_name">Enter tournament name</string>
+    <string name="tournament_name_hint">Tournament name</string>
+    <string name="add_teams_to_start">Add Teams to Start</string>
+    <string name="generate_round">Generate Round</string>
+    <string name="team_name">Team Name</string>
+    <string name="done">Done</string>
+    <string name="team_already_exists">Team already exists</string>
+    <string name="tournament_saved">Tournament saved</string>
+    <string name="add">Add</string>
+    <string name="team_names_comma_separated">Team Names (comma-separated)</string>
+    <string name="start_tournament">Start Tournament</string>
+    <string name="tournament_mode">Tournament Mode</string>
+    <string name="target_score">Target Score</string>
+    <string name="best_of">Best Of</string>
+    <string name="tournament_name">Tournament Name</string>
+    <string name="medal">Medal icon</string>
+</resources>
