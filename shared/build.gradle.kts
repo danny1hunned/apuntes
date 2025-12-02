@@ -65,9 +65,3 @@ tasks.register<Exec>("assembleXCFramework") {
     }
 }
 
-tasks.register<Exec>("createXCFramework") {
-    group = "build"
-    description = "Builds the shared iOS XCFramework (KMP)"
-
-    commandLine("bash", "-c", "./gradlew :shared:assembleReleaseXCFramework || ./gradlew :shared:assembleDebugXCFramework")
-}
