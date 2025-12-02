@@ -15,15 +15,15 @@ kotlin {
 
     val xcfName = "sharedKit"
 
-    // ✅ Define iOS targets and create XCFramework output
+    // ✅ Define iOS targets
     val iosTargets = listOf(
         iosX64(),
         iosArm64(),
         iosSimulatorArm64()
     )
 
+    // ✅ Set up XCFramework output
     val xcf = XCFramework(xcfName)
-
     iosTargets.forEach {
         it.binaries.framework {
             baseName = xcfName
@@ -49,14 +49,9 @@ kotlin {
     }
 }
 
-// ✅ Cross-platform safe XCFramework build task
-tasks.register<Exec>("createXCFramework") {
+// ✅ Simplified task – directly depends on assembleXCFramework
+tasks.register("createXCFramework") {
     group = "build"
     description = "Builds the shared iOS XCFramework (KMP)"
-
-    // Works both locally and in GitHub Actions
-    val gradlewPath = "${project.rootDir}/gradlew"
-
-    // On macOS (GitHub Actions) this will build the XCFramework
-    commandLine(gradlewPath, ":shared:assembleXCFramework")
+    dependsOn("assembleXCFramework")
 }
