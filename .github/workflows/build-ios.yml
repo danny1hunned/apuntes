@@ -9,7 +9,7 @@ on:
 
 jobs:
   build-ios:
-    name: Build shared XCFramework (KMP)
+    name: Build and Upload iOS XCFramework
     runs-on: macos-latest
 
     steps:
@@ -30,9 +30,21 @@ jobs:
           chmod +x ./gradlew
           ./gradlew :shared:createXCFramework --stacktrace
 
+      - name: Extract version from Gradle
+        id: version
+        run: |
+          VERSION=$(grep "versionName" app/build.gradle.kts | sed 's/.*"\(.*\)".*/\1/')
+          echo "version=$VERSION" >> $GITHUB_ENV
+          echo "📦 Detected version: $VERSION"
+
+      - name: Zip XCFramework
+        run: |
+          cd shared/build/XCFrameworks/release
+          zip -r sharedKit_v${{ env.version }}.xcframework.zip sharedKit.xcframework
+
       - name: Upload XCFramework artifact
         uses: actions/upload-artifact@v4
         with:
-          name: sharedKit.xcframework
-          path: |
-            shared/build/XCFrameworks/release/sharedKit.xcframework
+          name: sharedKit_v${{ env.version }}.xcframework
+          path: shared/build/XCFrameworks/release/sharedKit_v${{ env.version }}.xcframework.zip
+
