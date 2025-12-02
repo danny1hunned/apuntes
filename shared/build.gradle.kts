@@ -14,21 +14,16 @@ kotlin {
     }
 
     val xcfName = "sharedKit"
-
-    // ✅ Define iOS targets
-    val iosTargets = listOf(
-        iosX64(),
-        iosArm64(),
-        iosSimulatorArm64()
-    )
-
-    // ✅ Set up XCFramework output
     val xcf = XCFramework(xcfName)
-    iosTargets.forEach {
-        it.binaries.framework {
-            baseName = xcfName
-            isStatic = false
-            xcf.add(this)
+
+    // ✅ Explicitly define iOS targets (Kotlin 2.x style)
+    targets.withType<org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget>().configureEach {
+        if (konanTarget.family.isAppleFamily) {
+            binaries.framework {
+                baseName = xcfName
+                isStatic = false
+                xcf.add(this)
+            }
         }
     }
 
@@ -49,9 +44,9 @@ kotlin {
     }
 }
 
-// ✅ Simplified task – directly depends on assembleXCFramework
+// ✅ Define build entry task for XCFramework
 tasks.register("createXCFramework") {
     group = "build"
-    description = "Builds the shared iOS XCFramework (KMP)"
-    dependsOn("assembleXCFramework")
+    description = "Builds the iOS XCFramework from KMP targets"
+    dependsOn("assembleSharedKitXCFramework")
 }
