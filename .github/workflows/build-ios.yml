@@ -34,7 +34,7 @@ jobs:
           chmod +x gradlew
           ./gradlew :shared:createXCFramework --stacktrace
 
-           - name: 📦 Package XCFramework
+      - name: 📦 Package XCFramework
         run: |
           cd shared/build/XCFrameworks
           # Handle both possible output folder names
@@ -49,9 +49,8 @@ jobs:
           fi
           zip -r sharedKit_v${{ github.run_number }}.zip sharedKit.xcframework
 
-
       - name: 🚀 Upload XCFramework Artifact
         uses: actions/upload-artifact@v4
         with:
           name: sharedKit_xcframework
-          path: shared/build/XCFrameworks/release/sharedKit.xcframework
+          path: shared/build/XCFrameworks/**
