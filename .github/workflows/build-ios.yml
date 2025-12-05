@@ -34,29 +34,26 @@ jobs:
           chmod +x gradlew
           ./gradlew :shared:createXCFramework --stacktrace
 
-      - name: 🔍 Debug XCFramework Output Path
+      - name: 🔍 Locate XCFramework Output
+        id: find_xc
         run: |
-          echo "Checking XCFramework output..."
-          ls -R shared/build || echo "No build folder found"
-
+          echo "🔎 Searching for XCFramework..."
+          FOUND_PATH=$(find shared/build -type d -name "*.xcframework" | head -n 1)
+          if [ -z "$FOUND_PATH" ]; then
+            echo "❌ No XCFramework found!"
+            ls -R shared/build || echo "Build folder missing!"
+            exit 1
+          fi
+          echo "✅ Found XCFramework at: $FOUND_PATH"
+          echo "path=$FOUND_PATH" >> $GITHUB_OUTPUT
 
       - name: 📦 Package XCFramework
         run: |
-          cd shared/build/XCFrameworks
-          # Handle both possible output folder names
-          if [ -d "releaseSharedKit" ]; then
-            cd releaseSharedKit
-          elif [ -d "release" ]; then
-            cd release
-          else
-            echo "❌ No XCFramework output found!"
-            ls -R ..
-            exit 1
-          fi
-          zip -r sharedKit_v${{ github.run_number }}.zip sharedKit.xcframework
+          cd $(dirname "${{ steps.find_xc.outputs.path }}")
+          zip -r sharedKit_v${{ github.run_number }}.zip $(basename "${{ steps.find_xc.outputs.path }}")
 
       - name: 🚀 Upload XCFramework Artifact
         uses: actions/upload-artifact@v4
         with:
           name: sharedKit_xcframework
-          path: shared/build/XCFrameworks/**
+          path: shared/build/**/*.zip
