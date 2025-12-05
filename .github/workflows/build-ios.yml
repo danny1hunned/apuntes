@@ -36,8 +36,11 @@ jobs:
           ./gradlew :shared:compileKotlinIosArm64
           ./gradlew :shared:compileKotlinIosSimulatorArm64
 
-      - name: 🏗️ Build XCFramework
-        run: ./gradlew :shared:assembleSharedKitXCFramework --stacktrace
+          - name: 🧱 Build XCFramework
+        run: |
+          chmod +x gradlew
+          ./gradlew :shared:createXCFramework --stacktrace
+
 
       - name: 📦 Locate and zip XCFramework output
         shell: bash
