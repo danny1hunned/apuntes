@@ -34,6 +34,12 @@ jobs:
           chmod +x gradlew
           ./gradlew :shared:createXCFramework --stacktrace
 
+      - name: 🔍 Debug XCFramework Output Path
+        run: |
+          echo "Checking XCFramework output..."
+          ls -R shared/build || echo "No build folder found"
+
+
       - name: 📦 Package XCFramework
         run: |
           cd shared/build/XCFrameworks
