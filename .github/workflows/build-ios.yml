@@ -1,79 +1,82 @@
-name: 🚀 Auto Build & Release iOS XCFramework (Apuntes)
+name: 📦 Build & Release XCFramework
 
 on:
   push:
     branches: [ main ]
   workflow_dispatch:
 
+env:
+  JAVA_VERSION: 17
+  next_version: v1.0
+
 jobs:
-  build-ios:
-    name: Build & Release XCFramework
-    runs-on: macos-latest  # change to 'self-hosted' if using your own runner
+  build:
+    name: 🏗️ Build Shared Module
+    runs-on: macos-latest
 
     steps:
-      # 🧩 Checkout repo
-      - name: Checkout repository
+      - name: 🧩 Checkout repository
         uses: actions/checkout@v4
 
-      # ☕ JDK for Gradle
-      - name: Set up JDK 17
+      - name: ☕ Setup JDK ${{ env.JAVA_VERSION }}
         uses: actions/setup-java@v4
         with:
           distribution: temurin
-          java-version: 17
+          java-version: ${{ env.JAVA_VERSION }}
 
-      # ⚙️ Gradle setup
-      - name: Set up Gradle
-        uses: gradle/gradle-build-action@v3
+      - name: ⚙️ Setup Gradle
+        uses: gradle/actions/setup-gradle@v3
 
-      # 🧾 Make Gradle wrapper executable
-      - name: Grant execute permission to Gradle wrapper
-        run: chmod +x ./gradlew
-
-      # 🏷️ Determine next version number (auto-increment)
-      - name: Get next version tag
-        id: versioning
+      - name: 🧱 Prebuild iOS targets
         run: |
-          last_tag=$(git tag --sort=-v:refname | grep -E '^v[0-9]+\.[0-9]+$' | head -n 1)
-          if [ -z "$last_tag" ]; then
-            next_version="v1.0"
-          else
-            major=$(echo $last_tag | cut -d'.' -f1 | tr -d 'v')
-            minor=$(echo $last_tag | cut -d'.' -f2)
-            next_minor=$((minor + 1))
-            next_version="v${major}.${next_minor}"
+          ./gradlew :shared:compileKotlinIosArm64
+          ./gradlew :shared:compileKotlinIosSimulatorArm64
+
+      - name: 🏗️ Build XCFramework
+        run: ./gradlew :shared:assembleSharedKitXCFramework --stacktrace
+
+      - name: 📦 Locate and zip XCFramework output
+        shell: bash
+        run: |
+          echo "🔍 Searching for .xcframework inside shared/build..."
+          FRAMEWORK_PATH=$(find shared/build -type d -name "*.xcframework" | head -n 1)
+          echo "📁 Found at: $FRAMEWORK_PATH"
+          if [ -z "$FRAMEWORK_PATH" ]; then
+            echo "❌ XCFramework not found. Build may have failed."
+            exit 1
           fi
-          echo "next_version=$next_version" >> $GITHUB_ENV
-          echo "Next version: $next_version"
+          ZIP_NAME="sharedKit_${{ env.next_version }}.xcframework.zip"
+          mkdir -p shared/build/XCFrameworks
+          zip -r "shared/build/XCFrameworks/$ZIP_NAME" "$FRAMEWORK_PATH"
+          echo "✅ Created: shared/build/XCFrameworks/$ZIP_NAME"
 
-      # 🏗️ Build XCFramework
-      - name: Build shared XCFramework
-        run: ./gradlew :shared:createXCFramework --stacktrace
-
-      # 📦 Zip the XCFramework output
-      - name: Zip XCFramework output
-        run: |
-          cd shared/build/XCFrameworks
-          zip -r sharedKit_${{ env.next_version }}.xcframework.zip sharedKit.xcframework
-
-      # ⬆️ Upload as a workflow artifact
-      - name: Upload XCFramework artifact
+      - name: 💾 Upload artifact
         uses: actions/upload-artifact@v4
         with:
           name: sharedKit_${{ env.next_version }}
-          path: shared/build/XCFrameworks/sharedKit_${{ env.next_version }}.xcframework.zip
+          path: shared/build/XCFrameworks/*.zip
 
-      # 🏁 Create GitHub Release
-      - name: Create GitHub Release
+  release:
+    name: 🚀 Publish GitHub Release
+    runs-on: ubuntu-latest
+    needs: build
+
+    steps:
+      - name: 📂 Download built artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: sharedKit_${{ env.next_version }}
+          path: ./release
+
+      - name: 🧾 Create GitHub Release
         uses: softprops/action-gh-release@v2
         with:
           tag_name: ${{ env.next_version }}
-          name: "Apuntes SharedKit ${{ env.next_version }}"
+          name: "SharedKit ${{ env.next_version }}"
           body: |
-            🚀 Automatic build and release for Apuntes KMP SharedKit  
-            ✅ Version: **${{ env.next_version }}**
-            ✅ Built automatically via CI  
-            ✅ Ready for integration into Xcode  
-          files: shared/build/XCFrameworks/sharedKit_${{ env.next_version }}.xcframework.zip
+            🚀 SharedKit KMP XCFramework build for iOS & Android.
+            - Includes iOS Arm64 and Simulator binaries
+            - Built automatically on push to **main**
+          files: ./release/*.zip
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
