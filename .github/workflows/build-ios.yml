@@ -1,4 +1,4 @@
-name: 🧱 Build XCFramework
+name: 🧱 Build iOS XCFramework
 
 on:
   push:
@@ -8,8 +8,8 @@ on:
 
 jobs:
   build-ios:
+    name: 🧱 Build XCFramework
     runs-on: macos-latest
-    name: 🧱 Build and Upload XCFramework
 
     steps:
       - name: 📦 Checkout repository
@@ -29,21 +29,19 @@ jobs:
           chmod +x gradlew
           ./gradlew clean
 
-      - name: 🏗️ Build XCFramework (iOS only)
+      - name: 🏗️ Build XCFramework
         run: |
           chmod +x gradlew
-          echo "🔨 Building iOS XCFramework..."
-          ./gradlew :shared:assembleReleaseIosFatFrameworkForSharedKitXCFramework --no-daemon --stacktrace
-          echo "✅ Build completed."
+          ./gradlew :shared:createXCFramework --stacktrace
 
-      - name: 🔎 Locate XCFramework
-        id: locate
+      - name: 🔎 Search for built XCFramework
+        id: find_framework
         run: |
           echo "🔎 Searching for XCFramework..."
           FOUND_PATH=$(find shared/build -type d -name "*.xcframework" | head -n 1)
           if [ -z "$FOUND_PATH" ]; then
-            echo "❌ No XCFramework found! Checking all build folders..."
-            ls -R shared || echo "⚠️ shared folder missing!"
+            echo "❌ No XCFramework found!"
+            ls -R shared/build || echo "Build folder missing!"
             exit 1
           fi
           echo "✅ Found XCFramework at: $FOUND_PATH"
@@ -51,13 +49,11 @@ jobs:
 
       - name: 📦 Package XCFramework
         run: |
-          cd $(dirname "${{ steps.locate.outputs.path }}")
-          zip -r sharedKit_v${{ github.run_number }}.zip $(basename "${{ steps.locate.outputs.path }}")
-          echo "✅ Zipped XCFramework: sharedKit_v${{ github.run_number }}.zip"
+          cd $(dirname "${{ steps.find_framework.outputs.path }}")
+          zip -r sharedKit_v${{ github.run_number }}.zip sharedKit.xcframework
 
       - name: 🚀 Upload XCFramework Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: sharedKit_xcframework_v${{ github.run_number }}
-          path: |
-            **/sharedKit_v${{ github.run_number }}.zip
+          name: sharedKit_xcframework
+          path: shared/build/XCFrameworks/releaseSharedKit/sharedKit.xcframework
