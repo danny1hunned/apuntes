@@ -1,4 +1,4 @@
-name: Build iOS XCFramework
+name: 🧱 Build XCFramework
 
 on:
   push:
@@ -29,26 +29,15 @@ jobs:
           chmod +x gradlew
           ./gradlew clean
 
-      # ✅ Force Gradle to compile both iOS targets
-      - name: 🧩 Build iOS frameworks
-        run: |
-          chmod +x gradlew
-          ./gradlew :shared:assembleReleaseXCFramework \
-                     :shared:assembleSharedKitXCFramework \
-                     :shared:compileKotlinIosArm64 \
-                     :shared:compileKotlinIosSimulatorArm64 || true
-
       - name: 🏗️ Build XCFramework
         run: |
           chmod +x gradlew
-          ./gradlew :shared:createXCFramework --stacktrace || true
+          ./gradlew :shared:assembleSharedKitXCFramework --stacktrace
 
-      - name: 🔍 Locate XCFramework Output
-        id: find_xc
+      - name: 🔎 Find XCFramework output
+        id: find_xcf
         run: |
           echo "🔎 Searching for XCFramework..."
-          mkdir -p shared/build
-          ls shared/build || true
           FOUND_PATH=$(find shared/build -type d -name "*.xcframework" | head -n 1)
           if [ -z "$FOUND_PATH" ]; then
             echo "❌ No XCFramework found!"
@@ -58,13 +47,13 @@ jobs:
           echo "✅ Found XCFramework at: $FOUND_PATH"
           echo "path=$FOUND_PATH" >> $GITHUB_OUTPUT
 
-      - name: 📦 Package XCFramework
+      - name: 📦 Zip XCFramework
         run: |
-          cd $(dirname "${{ steps.find_xc.outputs.path }}")
-          zip -r sharedKit_v${{ github.run_number }}.zip $(basename "${{ steps.find_xc.outputs.path }}")
+          cd $(dirname "${{ steps.find_xcf.outputs.path }}")
+          zip -r sharedKit_v${{ github.run_number }}.zip $(basename "${{ steps.find_xcf.outputs.path }}")
 
       - name: 🚀 Upload XCFramework Artifact
         uses: actions/upload-artifact@v4
         with:
           name: sharedKit_xcframework
-          path: shared/build/**/*.zip
+          path: shared/build/**/*.xcframework
