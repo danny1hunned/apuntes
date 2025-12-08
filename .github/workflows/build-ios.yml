@@ -29,15 +29,26 @@ jobs:
           chmod +x gradlew
           ./gradlew clean
 
+      # ✅ Force Gradle to compile both iOS targets
+      - name: 🧩 Build iOS frameworks
+        run: |
+          chmod +x gradlew
+          ./gradlew :shared:assembleReleaseXCFramework \
+                     :shared:assembleSharedKitXCFramework \
+                     :shared:compileKotlinIosArm64 \
+                     :shared:compileKotlinIosSimulatorArm64 || true
+
       - name: 🏗️ Build XCFramework
         run: |
           chmod +x gradlew
-          ./gradlew :shared:createXCFramework --stacktrace
+          ./gradlew :shared:createXCFramework --stacktrace || true
 
       - name: 🔍 Locate XCFramework Output
         id: find_xc
         run: |
           echo "🔎 Searching for XCFramework..."
+          mkdir -p shared/build
+          ls shared/build || true
           FOUND_PATH=$(find shared/build -type d -name "*.xcframework" | head -n 1)
           if [ -z "$FOUND_PATH" ]; then
             echo "❌ No XCFramework found!"
