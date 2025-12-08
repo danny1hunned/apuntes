@@ -31,8 +31,10 @@ jobs:
 
       - name: 🏗️ Build XCFramework
         run: |
-          chmod +x gradlew
-          ./gradlew :shared:assembleReleaseSharedKitXCFramework --no-daemon --stacktrace
+         chmod +x gradlew
+         echo "🔨 Building XCFramework for iOS..."
+         ./gradlew :shared:assembleReleaseIosFatFrameworkForSharedKitXCFramework --no-daemon --stacktrace
+
 
 
       - name: 🔎 Find XCFramework output
