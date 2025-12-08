@@ -32,7 +32,8 @@ jobs:
       - name: 🏗️ Build XCFramework
         run: |
           chmod +x gradlew
-          ./gradlew :shared:assembleSharedKitXCFramework --stacktrace
+          ./gradlew :shared:assembleReleaseSharedKitXCFramework --no-daemon --stacktrace
+
 
       - name: 🔎 Find XCFramework output
         id: find_xcf
