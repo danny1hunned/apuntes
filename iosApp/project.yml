@@ -1,0 +1,108 @@
+name: Apuntes
+options:
+  minimumXcodeGenVersion: 2.42.0
+  deploymentTarget:
+    iOS: "16.0"
+  developmentLanguage: en
+  createIntermediateGroups: true
+configs:
+  Debug: debug
+  Release: release
+configFiles:
+  Debug: Config/Debug.xcconfig
+  Release: Config/Release.xcconfig
+settings:
+  base:
+    SWIFT_VERSION: "5.0"
+    TARGETED_DEVICE_FAMILY: "1,2"
+    ENABLE_USER_SCRIPT_SANDBOXING: NO
+packages:
+  GoogleMobileAds:
+    url: https://github.com/googleads/swift-package-manager-google-mobile-ads.git
+    exactVersion: 12.14.0
+  GoogleUserMessagingPlatform:
+    url: https://github.com/googleads/swift-package-manager-google-user-messaging-platform.git
+    exactVersion: 3.1.0
+targets:
+  Apuntes:
+    type: application
+    platform: iOS
+    sources:
+      - path: Apuntes
+        excludes: [Info.plist]
+    info:
+      path: Apuntes/Info.plist
+      properties:
+        CFBundleDisplayName: Apuntes
+        CFBundleShortVersionString: $(MARKETING_VERSION)
+        CFBundleVersion: $(CURRENT_PROJECT_VERSION)
+        LSRequiresIPhoneOS: true
+        UIApplicationSceneManifest:
+          UIApplicationSupportsMultipleScenes: false
+        UILaunchScreen: {}
+        UISupportedInterfaceOrientations:
+          - UIInterfaceOrientationPortrait
+          - UIInterfaceOrientationLandscapeLeft
+          - UIInterfaceOrientationLandscapeRight
+        UISupportedInterfaceOrientations~ipad:
+          - UIInterfaceOrientationPortrait
+          - UIInterfaceOrientationPortraitUpsideDown
+          - UIInterfaceOrientationLandscapeLeft
+          - UIInterfaceOrientationLandscapeRight
+        GADApplicationIdentifier: $(ADMOB_APP_ID)
+        AdMobBannerID: $(ADMOB_BANNER_ID)
+        SKAdNetworkItems:
+          - SKAdNetworkIdentifier: cstr6suwn9.skadnetwork
+        ITSAppUsesNonExemptEncryption: false
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: $(APUNTES_BUNDLE_ID)
+        MARKETING_VERSION: "3.0"
+        CURRENT_PROJECT_VERSION: "1"
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+        CODE_SIGN_STYLE: Automatic
+        OTHER_LDFLAGS: $(inherited) -ObjC
+    dependencies:
+      - framework: ../shared/build/XCFrameworks/release/sharedKit.xcframework
+        embed: true
+      - package: GoogleMobileAds
+      - package: GoogleUserMessagingPlatform
+    preBuildScripts:
+      - name: Build Kotlin framework
+        script: bash "$SRCROOT/scripts/build-shared.sh"
+        basedOnDependencyAnalysis: false
+  ApuntesTests:
+    type: bundle.unit-test
+    platform: iOS
+    sources: [Tests]
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.apuntes.ios.tests
+        GENERATE_INFOPLIST_FILE: YES
+    dependencies:
+      - target: Apuntes
+  ApuntesUITests:
+    type: bundle.ui-testing
+    platform: iOS
+    sources: [UITests]
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.apuntes.ios.uitests
+        GENERATE_INFOPLIST_FILE: YES
+    dependencies:
+      - target: Apuntes
+schemes:
+  Apuntes:
+    build:
+      targets:
+        Apuntes: all
+    run:
+      config: Debug
+    test:
+      config: Debug
+      gatherCoverageData: true
+      targets:
+        - ApuntesTests
+        - ApuntesUITests
+    archive:
+      config: Release

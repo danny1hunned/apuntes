@@ -1,0 +1,5 @@
+// Use your registered iOS bundle identifier, Apple team and iOS AdMob identifiers.
+APUNTES_BUNDLE_ID = com.apuntes.ios
+DEVELOPMENT_TEAM = YOUR_APPLE_TEAM_ID
+ADMOB_APP_ID = YOUR_IOS_ADMOB_APP_ID
+ADMOB_BANNER_ID = YOUR_IOS_BANNER_AD_UNIT_ID

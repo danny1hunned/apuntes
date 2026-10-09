@@ -1,0 +1,4 @@
+APUNTES_BUNDLE_ID = com.apuntes.ios
+ADMOB_APP_ID = ca-app-pub-3940256099942544~1458002511
+ADMOB_BANNER_ID = ca-app-pub-3940256099942544/2435281174
+#include? "Local.xcconfig"
