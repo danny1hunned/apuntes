@@ -1,0 +1,6 @@
+Apuntes.xcodeproj/
+Config/Local.xcconfig
+build/
+*.xcresult
+Apuntes/Info.plist
+Apuntes/Assets.xcassets/AppIcon.appiconset/AppIcon.png

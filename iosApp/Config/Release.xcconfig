@@ -1,0 +1,5 @@
+APUNTES_BUNDLE_ID = com.apuntes.ios
+// The sample app identifier permits unsigned archive validation; live ads stay disabled.
+ADMOB_APP_ID = ca-app-pub-3940256099942544~1458002511
+ADMOB_BANNER_ID =
+#include? "Local.xcconfig"

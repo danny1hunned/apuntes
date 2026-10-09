@@ -1,59 +1,93 @@
-name: 🧱 Build iOS XCFramework
+name: Build and Test iOS
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ main ]
   pull_request:
-    branches: [ "main" ]
+    branches: [ main ]
+  workflow_dispatch:
+
+permissions:
+  contents: read
 
 jobs:
   build-ios:
-    name: 🧱 Build XCFramework
-    runs-on: macos-latest
+    name: iOS app, shared engine and simulator tests
+    runs-on: macos-15
+    timeout-minutes: 60
+    env:
+      DEVELOPER_DIR: /Applications/Xcode_26.0.1.app/Contents/Developer
 
     steps:
-      - name: 📦 Checkout repository
+      - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: 🧰 Set up JDK 17
+      - name: Verify App Store build toolchain
+        run: |
+          xcodebuild -version
+          xcrun --sdk iphoneos --show-sdk-version
+
+      - name: Set up JDK
         uses: actions/setup-java@v4
         with:
-          java-version: '17'
-          distribution: 'temurin'
+          distribution: temurin
+          java-version: "17"
 
-      - name: 🧱 Setup Gradle
-        uses: gradle/actions/setup-gradle@v3
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v4
 
-      - name: 🧹 Clean project
+      - name: Set up Android SDK for Gradle configuration
+        uses: android-actions/setup-android@v3
+        with:
+          packages: platform-tools
+          log-accepted-android-sdk-licenses: false
+
+      - name: Install Android SDK components
+        run: sdkmanager "platforms;android-36" "build-tools;36.0.0"
+
+      - name: Install XcodeGen and icon decoder
+        run: brew install xcodegen webp
+
+      - name: Prepare app and shared framework
+        run: bash iosApp/scripts/prepare.sh
+
+      - name: Test shared engine on iOS
         run: |
-          chmod +x gradlew
-          ./gradlew clean
-
-      - name: 🏗️ Build XCFramework
-        run: |
-          chmod +x gradlew
-          ./gradlew :shared:createXCFramework --stacktrace
-
-      - name: 🔎 Search for built XCFramework
-        id: find_framework
-        run: |
-          echo "🔎 Searching for XCFramework..."
-          FOUND_PATH=$(find shared/build -type d -name "*.xcframework" | head -n 1)
-          if [ -z "$FOUND_PATH" ]; then
-            echo "❌ No XCFramework found!"
-            ls -R shared/build || echo "Build folder missing!"
-            exit 1
+          if [[ "$(uname -m)" == "arm64" ]]; then
+            bash ./gradlew :shared:iosSimulatorArm64Test
+          else
+            bash ./gradlew :shared:iosX64Test
           fi
-          echo "✅ Found XCFramework at: $FOUND_PATH"
-          echo "path=$FOUND_PATH" >> $GITHUB_OUTPUT
 
-      - name: 📦 Package XCFramework
-        run: |
-          cd $(dirname "${{ steps.find_framework.outputs.path }}")
-          zip -r sharedKit_v${{ github.run_number }}.zip sharedKit.xcframework
+      - name: Run iPhone and iPad tests
+        env:
+          SKIP_KOTLIN_BUILD: "YES"
+        run: bash iosApp/scripts/test-simulators.sh
 
-      - name: 🚀 Upload XCFramework Artifact
+      - name: Validate unsigned device archive
+        env:
+          SKIP_KOTLIN_BUILD: "YES"
+        run: >-
+          xcodebuild archive -project iosApp/Apuntes.xcodeproj -scheme Apuntes
+          -configuration Release -destination 'generic/platform=iOS'
+          -archivePath iosApp/build/Apuntes.xcarchive CODE_SIGNING_ALLOWED=NO
+
+      - name: Upload test results and screenshots
+        if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: sharedKit_xcframework
-          path: shared/build/XCFrameworks/releaseSharedKit/sharedKit.xcframework
+          name: ios-test-results
+          path: |
+            iosApp/build/*.xcresult
+            shared/build/reports/tests/
+          if-no-files-found: warn
+
+      - name: Upload unsigned archive and framework
+        uses: actions/upload-artifact@v4
+        with:
+          name: Apuntes-iOS-unsigned
+          if-no-files-found: error
+          path: |
+            iosApp/build/Apuntes.xcarchive
+            shared/build/XCFrameworks/release/sharedKit.xcframework
+
