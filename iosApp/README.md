@@ -27,7 +27,7 @@ cross-device synchronization are not included.
 ## Build on a Mac
 
 Install Xcode 26.0.1 (the CI-pinned version), its iOS simulator runtime, JDK 17+, Android SDK
-platform 36 and build tools 36.0.0, and XcodeGen (`brew install xcodegen`). Set
+platform 36 and build tools 36.0.0, and XcodeGen plus WebP (`brew install xcodegen webp`). Set
 `ANDROID_HOME` to the SDK location and `JAVA_HOME` to your JDK. Preparation updates
 only `sdk.dir` in the tracked `local.properties` to use the Mac's SDK path.
 The preparation script rejects Xcode or iOS SDK versions below 26, as required

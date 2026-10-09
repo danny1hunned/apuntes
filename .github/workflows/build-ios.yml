@@ -45,8 +45,8 @@ jobs:
       - name: Install Android SDK components
         run: sdkmanager "platforms;android-36" "build-tools;36.0.0"
 
-      - name: Install XcodeGen
-        run: brew install xcodegen
+      - name: Install XcodeGen and icon decoder
+        run: brew install xcodegen webp
 
       - name: Prepare app and shared framework
         run: bash iosApp/scripts/prepare.sh
